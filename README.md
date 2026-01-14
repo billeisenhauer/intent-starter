@@ -61,6 +61,7 @@ Two rules govern AI behavior (see `.claude/rules/`):
 
 | Skill | Purpose |
 |-------|---------|
+| `intake` | Turn an idea into truth artifacts directly |
 | `intent-distill` | Extract truth artifacts from PRDs and stories |
 | `boundary-classify` | Classify changes by pace layer |
 | `truth-verify` | Run verification with formatted summary |
