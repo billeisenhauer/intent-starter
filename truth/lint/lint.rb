@@ -17,7 +17,12 @@ FORBIDDEN_PATTERNS = [
 
 violations = []
 
+# Skip the linter itself (contains patterns as definitions)
+EXCLUDED_FILES = %w[truth/lint/lint.rb]
+
 Dir.glob("truth/**/*.{md,yml,rb,sql}").each do |file|
+  next if EXCLUDED_FILES.include?(file)
+
   content = File.read(file)
   FORBIDDEN_PATTERNS.each do |pattern|
     if content.match?(pattern)

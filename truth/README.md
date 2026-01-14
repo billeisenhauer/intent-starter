@@ -20,7 +20,7 @@ the system has changed identity.
 ## Non-Negotiable Rules
 
 - Nothing in `truth/` may depend on application code
-- Nothing in `truth/` may reference frameworks (Rails, React, etc.)
+- Nothing in `truth/` may reference frameworks (web frameworks, frontend libraries, etc.)
 - Nothing in `truth/` may describe *how* something is built
 - Everything in `truth/` must be either:
   - a normative claim, or

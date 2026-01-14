@@ -14,7 +14,7 @@ Pace answers:
 ## Important Distinction
 
 Pace does NOT say:
-- how fast you should work
+- how fast to work
 - how important something feels
 
 Pace says:

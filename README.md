@@ -23,10 +23,18 @@ it belongs nowhere *but* `truth/`.
 
 ## How to Work Here
 
-- Begin new work by reading `truth/`
-- Modify `truth/` only with explicit intent
-- Let `truth:verify` be the final authority
-- Treat app code as disposable
+1. Begin new work by reading `truth/`
+2. Modify `truth/` only with explicit intent
+3. Let `truth:verify` be the final authority
+4. Treat app code as disposable
+
+## Verification
+
+```bash
+make -C truth truth:verify
+```
+
+If truth fails, the system is invalid — regardless of test results elsewhere.
 
 ## What Matters Most
 

@@ -1,0 +1,41 @@
+# Pace Layer Definitions
+# Defines permission to change, not implementation paths.
+# Path mappings live in apps/{app}/pace-mapping.yml
+
+fast:
+  description: "Expected to be regenerated frequently."
+  regeneration: "AI-first. Minimal review."
+  characteristics:
+    - High churn
+    - User-facing presentation
+    - Glue code
+    - No architectural preservation required
+  requirements:
+    human_review: optional
+    tests: optional
+    truth_update: never
+
+medium:
+  description: "Semi-durable. Evolves but not disposable."
+  regeneration: "AI-assisted with human review."
+  characteristics:
+    - Business workflows
+    - Orchestration logic
+    - Cross-boundary coordination
+  requirements:
+    human_review: required
+    tests: recommended
+    truth_update: if_contracts_change
+
+slow:
+  description: "System identity. Changes rarely and deliberately."
+  regeneration: "AI constrained. Human approval required."
+  characteristics:
+    - Business invariants
+    - Data shape
+    - External contracts
+    - Security boundaries
+  requirements:
+    human_review: required
+    tests: mandatory
+    truth_update: required

@@ -22,7 +22,7 @@ Intent is **normative**, not descriptive.
 - Implementation details
 - Framework references
 - Procedural plans
-- Speculation ("for now", "eventually", "maybe")
+- Speculation (temporal hedging, uncertainty markers)
 
 If a statement cannot be evaluated against a running system,
 it does not belong here.
