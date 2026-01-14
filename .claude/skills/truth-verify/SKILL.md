@@ -1,19 +1,9 @@
+---
+name: truth-verify
+description: Run the full truth verification workflow with formatted summary. Use after making changes to verify system identity is preserved, before committing or creating a PR, when the user asks to "verify truth" or "check truth", or as a final gate before any merge.
+---
+
 # Truth Verification
-
-Run the full truth verification workflow with formatted summary.
-
-## When to Use
-
-- After making changes to verify system identity is preserved
-- Before committing or creating a PR
-- When the user asks to "verify truth" or "check truth"
-- As a final gate before any merge
-
-## Process
-
-1. **Run truth:lint** — check for forbidden patterns
-2. **Run truth:spec** — execute evaluations (if specs exist)
-3. **Summarize results** — provide clear pass/fail status
 
 ## Commands
 
@@ -25,12 +15,18 @@ make -C truth truth:lint
 make -C truth truth:verify
 ```
 
+## Process
+
+1. Run truth:lint — check for forbidden patterns
+2. Run truth:spec — execute evaluations (if specs exist)
+3. Summarize results — provide clear pass/fail status
+
 ## Output Format
 
 ### On Success
 
 ```
-## Truth Verification: PASSED ✓
+## Truth Verification: PASSED
 
 **Lint:** Passed (no forbidden patterns)
 **Specs:** [Passed | Skipped (no specs yet)]
@@ -41,7 +37,7 @@ System identity preserved.
 ### On Failure
 
 ```
-## Truth Verification: FAILED ✗
+## Truth Verification: FAILED
 
 **Lint:** [Passed | Failed]
 **Specs:** [Passed | Failed]
@@ -49,22 +45,20 @@ System identity preserved.
 ### Violations
 
 - [file]: [violation description]
-- [file]: [violation description]
 
 ### Required Actions
 
 1. [Action to fix violation]
-2. [Action to fix violation]
 ```
 
 ## Interpretation
 
 | Result | Meaning |
 |--------|---------|
-| **PASSED** | System identity preserved — safe to proceed |
-| **FAILED** | System identity compromised — must fix before proceeding |
+| PASSED | System identity preserved — safe to proceed |
+| FAILED | System identity compromised — must fix before proceeding |
 
-## Important
+## Rules
 
 - A passing verification is the **only** authority for system validity
 - Test results elsewhere do NOT override truth verification
