@@ -1,0 +1,9 @@
+# docker-compose.dev.yml
+services:
+  app:
+    image: ${IMAGE}
+    init: true
+    volumes:
+      - type: bind
+        source: "."
+        target: "/root/workspace"

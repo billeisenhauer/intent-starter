@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# dx/build
+
+set -e
+set -o pipefail
+
+DIRNAME=$(dirname -- "${0}")
+SCRIPT_DIR=$(cd -- "${DIRNAME}" > /dev/null 2>&1 && pwd)
+ROOT_DIR=$(cd -- "${SCRIPT_DIR}"/.. > /dev/null 2>&1 && pwd)
+
+. "${SCRIPT_DIR}"/shared.lib.sh
+. "${SCRIPT_DIR}"/docker-compose.env
+
+usage() {
+  echo "usage: $0 [-h]"
+  echo ""
+  echo "Builds the development Docker image from Dockerfile.dev"
+  echo ""
+  echo "OPTIONS"
+  echo ""
+  echo "  -h - show this help"
+}
+
+while getopts ":h" opt "${@}"; do
+  case ${opt} in
+    h)
+      usage
+      exit 0
+      ;;
+    ?)
+      log "Invalid option: ${OPTARG}"
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+check_for_docker
+
+log "Building Docker image '${IMAGE}'"
+docker build \
+  --file "${ROOT_DIR}"/Dockerfile.dev \
+  --tag "${IMAGE}" \
+  "${ROOT_DIR}"
+
+log "Docker image '${IMAGE}' is built"

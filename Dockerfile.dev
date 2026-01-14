@@ -1,0 +1,29 @@
+# Dockerfile.dev
+# Minimal development environment for truth layer operations
+FROM debian:12
+
+# Update package lists
+RUN apt-get update --quiet --yes
+
+# Install locales and set UTF-8
+RUN apt-get install --quiet --yes locales
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Install build essentials
+RUN apt-get install --quiet --yes build-essential
+
+# Install Ruby (for truth layer lint and evaluations)
+# From https://www.ruby-lang.org/en/documentation/installation/#apt
+RUN apt-get install --quiet --yes ruby-full
+
+# Install make (for truth:verify commands)
+RUN apt-get install --quiet --yes make
+
+# Set working directory
+WORKDIR /root/workspace
+
+# Keep container running
+CMD ["/bin/bash", "-c", "tail -f /dev/null"]

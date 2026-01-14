@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# dx/exec
+
+set -e
+set -o pipefail
+
+DIRNAME=$(dirname -- "${0}")
+SCRIPT_DIR=$(cd -- "${DIRNAME}" > /dev/null 2>&1 && pwd)
+ROOT_DIR=$(cd -- "${SCRIPT_DIR}"/.. > /dev/null 2>&1 && pwd)
+
+. "${SCRIPT_DIR}"/shared.lib.sh
+
+SERVICE=app
+
+usage() {
+  echo "usage: $0 [-h] [-s service] command"
+  echo ""
+  echo "Executes a command inside a container"
+  echo ""
+  echo "OPTIONS"
+  echo ""
+  echo "  -s service - Set the service name (defaults to '${SERVICE}')"
+  echo "  -h         - show this help"
+  echo ""
+  echo "ARGUMENTS"
+  echo ""
+  echo "  command - a command line to execute inside the container"
+  echo ""
+  echo "EXAMPLES"
+  echo ""
+  echo "  dx/exec bash                    # Shell into app container"
+  echo "  dx/exec make -C truth truth:lint # Run truth lint"
+  echo "  dx/exec bin/setup               # Run setup script"
+}
+
+while getopts ":hs:" opt "${@}"; do
+  case ${opt} in
+    s)
+      SERVICE="${OPTARG}"
+      ;;
+    h)
+      usage
+      exit 0
+      ;;
+    ?)
+      log "Invalid option: ${OPTARG}"
+      usage
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+check_for_docker
+
+log "Executing '${@}' inside container with service named '${SERVICE}'"
+docker compose \
+  --env-file "${SCRIPT_DIR}"/docker-compose.env \
+  --ansi=never \
+  --file "${ROOT_DIR}"/docker-compose.dev.yml \
+  exec \
+    "${SERVICE}" \
+    "${@}"

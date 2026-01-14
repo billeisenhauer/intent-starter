@@ -28,10 +28,35 @@ it belongs nowhere *but* `truth/`.
 3. Let `truth:verify` be the final authority
 4. Treat app code as disposable
 
+## Development Environment
+
+This repository uses the DX Protocol for containerized development.
+
+```bash
+# Build the Docker image
+dx/build
+
+# Start the environment
+dx/start
+
+# Run commands inside the container
+dx/exec make -C truth truth:verify
+dx/exec bash
+
+# Stop the environment
+dx/stop
+```
+
+**Requirements:** Docker only. No Ruby, Node, or other dependencies needed on host.
+
 ## Verification
 
 ```bash
+# On host (if Ruby installed)
 make -C truth truth:verify
+
+# In container (no host dependencies)
+dx/exec make -C truth truth:verify
 ```
 
 If truth fails, the system is invalid — regardless of test results elsewhere.

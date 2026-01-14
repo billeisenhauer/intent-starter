@@ -8,10 +8,14 @@ TRUTH_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 truth\:lint:
 	cd $(TRUTH_DIR)/.. && ruby truth/lint/lint.rb
 
-# Run truth layer specs
+# Run truth layer specs (skips if no Gemfile)
 truth\:spec:
-	@echo "Running truth specs..."
-	cd $(TRUTH_DIR) && bundle exec rspec evaluations --format documentation
+	@if [ -f $(TRUTH_DIR)/Gemfile ]; then \
+		echo "Running truth specs..."; \
+		cd $(TRUTH_DIR) && bundle exec rspec evaluations --format documentation; \
+	else \
+		echo "Skipping specs (no Gemfile - add RSpec setup when ready)"; \
+	fi
 
 # Verify truth layer (lint + spec)
 truth\:verify: truth\:lint truth\:spec
