@@ -36,6 +36,35 @@ make -C truth truth:verify
 
 If truth fails, the system is invalid — regardless of test results elsewhere.
 
+## AI Collaboration
+
+This repository is designed for human-AI collaboration with explicit boundaries.
+
+### Agents
+
+Three agents provide checks and balances (see `.claude/agents/`):
+
+| Agent | Role | When to Invoke |
+|-------|------|----------------|
+| **Boundary Steward** | Architectural conscience | Before coding, before merge |
+| **Fast-Layer Builder** | Aggressive executor | Fast/medium pace stories |
+| **Contract Guardian** | Conservative reviewer | Any slow-layer change |
+
+### Rules
+
+Two rules govern AI behavior (see `.claude/rules/`):
+
+- **Truth Protection** — AI cannot modify `truth/` without explicit approval
+- **Pace Enforcement** — Changes are classified by layer before proceeding
+
+### Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `/intent-distill` | Extract truth artifacts from PRDs and stories |
+| `/boundary-classify` | Classify changes by pace layer |
+| `/truth-verify` | Run verification with formatted summary |
+
 ## What Matters Most
 
 This repository is not optimized for speed of coding.
