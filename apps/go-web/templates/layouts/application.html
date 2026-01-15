@@ -1,0 +1,105 @@
+{{define "application"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binge Watching — Your Household Viewing Intelligence</title>
+
+  <link rel="stylesheet" href="/static/css/vhs.css">
+
+  <style>
+    /* Page-specific layout styles */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm) var(--space-md);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .mobile-nav-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (max-width: 1024px) {
+      .mobile-nav-toggle { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="vhs-app">
+    <!-- Header -->
+    <header class="vhs-header">
+      <div class="logo-container">
+        <div class="logo-icon">▶</div>
+        <h1 class="vhs-title">Binge Watching</h1>
+      </div>
+
+      <div class="header-actions">
+        <button class="vhs-btn vhs-btn--ghost mobile-nav-toggle">☰ Menu</button>
+        <a href="#" class="vhs-btn vhs-btn--secondary">+ Mark Watched</a>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="vhs-sidebar">
+      {{template "sidebar" .}}
+    </aside>
+
+    <!-- Main Content -->
+    <main class="vhs-main">
+      {{template "content" .}}
+    </main>
+  </div>
+
+  <script>
+    // Member selection
+    document.querySelectorAll('.vhs-member').forEach(member => {
+      member.addEventListener('click', function() {
+        document.querySelectorAll('.vhs-member').forEach(m => m.classList.remove('vhs-member--active'));
+        this.classList.add('vhs-member--active');
+      });
+    });
+
+    // Navigation
+    document.querySelectorAll('.vhs-nav__item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        document.querySelectorAll('.vhs-nav__item').forEach(i => i.classList.remove('vhs-nav__item--active'));
+        this.classList.add('vhs-nav__item--active');
+      });
+    });
+  </script>
+</body>
+</html>
+{{end}}

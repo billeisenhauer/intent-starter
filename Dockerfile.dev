@@ -1,5 +1,5 @@
 # Dockerfile.dev
-# Development environment for Rails application and truth layer operations
+# Development environment for Rails, Go applications and truth layer operations
 FROM debian:12
 
 # Update package lists
@@ -39,6 +39,11 @@ RUN apt-get install --quiet --yes postgresql-client
 
 # Install Rails and Bundler
 RUN gem install bundler rails -N
+
+# Install Go 1.22
+RUN curl -fsSL https://go.dev/dl/go1.22.5.linux-amd64.tar.gz | tar -C /usr/local -xzf -
+ENV PATH="/usr/local/go/bin:/root/go/bin:${PATH}"
+ENV GOPATH="/root/go"
 
 # Set working directory
 WORKDIR /root/workspace

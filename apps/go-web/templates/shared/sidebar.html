@@ -1,0 +1,54 @@
+{{define "sidebar"}}
+<!-- Household Members -->
+<div class="vhs-members">
+  <h3 class="vhs-members__title">Household</h3>
+  {{if .Members}}
+    {{range $index, $member := .Members}}
+    <div class="vhs-member{{if eq $index 0}} vhs-member--active{{end}}">
+      <div class="vhs-member__avatar" style="background-color: {{$member.AvatarColor}}">
+        {{slice $member.Name 0 1}}
+      </div>
+      <span class="vhs-member__name">{{$member.Name}}</span>
+    </div>
+    {{end}}
+  {{else}}
+    <p class="vhs-empty-text">No members yet</p>
+  {{end}}
+</div>
+
+<!-- Navigation -->
+<nav class="vhs-nav">
+  <a href="/" class="vhs-nav__item vhs-nav__item--active">
+    <span class="vhs-nav__icon">🏠</span>
+    Dashboard
+  </a>
+  <a href="#" class="vhs-nav__item">
+    <span class="vhs-nav__icon">🎬</span>
+    Recommendations
+  </a>
+  <a href="#" class="vhs-nav__item">
+    <span class="vhs-nav__icon">📺</span>
+    Watchlist
+  </a>
+  <a href="#" class="vhs-nav__item">
+    <span class="vhs-nav__icon">📊</span>
+    Subscriptions
+  </a>
+  <a href="#" class="vhs-nav__item">
+    <span class="vhs-nav__icon">⚙️</span>
+    Settings
+  </a>
+</nav>
+
+<!-- Quick Stats -->
+<div class="vhs-sidebar-stats">
+  <div class="vhs-sidebar-stat">
+    <span class="vhs-sidebar-stat__value">{{.Stats.TotalWatched}}</span>
+    <span class="vhs-sidebar-stat__label">Watched</span>
+  </div>
+  <div class="vhs-sidebar-stat">
+    <span class="vhs-sidebar-stat__value">{{.Stats.InProgress}}</span>
+    <span class="vhs-sidebar-stat__label">In Progress</span>
+  </div>
+</div>
+{{end}}

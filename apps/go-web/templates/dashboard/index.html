@@ -1,0 +1,62 @@
+{{define "index.html"}}
+{{template "application" .}}
+{{end}}
+
+{{define "content"}}
+{{if .EmptyState}}
+  {{template "empty_state" .}}
+{{else}}
+  <!-- Stats Overview -->
+  {{template "stats" .}}
+
+  <!-- Main Grid -->
+  <div class="dashboard-grid">
+    <!-- Recommendations Section -->
+    <section class="dashboard-section dashboard-section--recommendations">
+      <div class="section-header">
+        <h2 class="section-title">Recommended For You</h2>
+        <span class="section-subtitle">Based on your household's viewing history</span>
+      </div>
+      <div class="recommendations-grid">
+        {{range .Recommendations}}
+          {{template "recommendation_card" .}}
+        {{else}}
+          <p class="vhs-empty-text">No recommendations yet. Start watching to get personalized suggestions!</p>
+        {{end}}
+      </div>
+    </section>
+
+    <!-- Subscriptions Section -->
+    <section class="dashboard-section dashboard-section--subscriptions">
+      <div class="section-header">
+        <h2 class="section-title">Subscription Intelligence</h2>
+        <span class="section-subtitle">Value assessment for your streaming services</span>
+      </div>
+      <div class="subscriptions-list">
+        {{if .Intelligence}}
+          {{range .Intelligence.Assessments}}
+            {{template "subscription_card" .}}
+          {{end}}
+        {{else}}
+          <p class="vhs-empty-text">No subscriptions tracked yet.</p>
+        {{end}}
+      </div>
+    </section>
+
+    <!-- Recent Activity Section -->
+    <section class="dashboard-section dashboard-section--history">
+      <div class="section-header">
+        <h2 class="section-title">Recent Activity</h2>
+        <a href="#" class="section-link">View All →</a>
+      </div>
+      <div class="history-list">
+        {{range .RecentHistory}}
+          {{template "history_item" .}}
+        {{else}}
+          <p class="vhs-empty-text">No viewing history yet.</p>
+        {{end}}
+      </div>
+    </section>
+  </div>
+{{end}}
+{{end}}

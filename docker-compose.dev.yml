@@ -1,6 +1,8 @@
 # docker-compose.dev.yml
+# Multi-app development environment with separate databases
 services:
-  app:
+  # Rails application (port 3000)
+  rails-app:
     image: ${IMAGE}
     init: true
     volumes:
@@ -10,20 +12,43 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/binge_watching_development
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/binge_watching_rails
       - RAILS_ENV=development
+    working_dir: /root/workspace/apps/rails-web
     depends_on:
       db:
         condition: service_healthy
 
+  # Go application (port 3001)
+  go-app:
+    image: ${IMAGE}
+    init: true
+    volumes:
+      - type: bind
+        source: "."
+        target: "/root/workspace"
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/binge_watching_go
+      - GO_ENV=development
+      - PORT=3001
+    working_dir: /root/workspace/apps/go-web
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # PostgreSQL database (creates multiple databases on init)
   db:
     image: postgres:16
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: binge_watching_development
+      POSTGRES_DB: postgres
+      POSTGRES_MULTIPLE_DATABASES: binge_watching_rails,binge_watching_go
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./dx/init-multiple-dbs.sh:/docker-entrypoint-initdb.d/init-multiple-dbs.sh:ro
     ports:
       - "5432:5432"
     healthcheck:
