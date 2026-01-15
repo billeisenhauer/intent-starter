@@ -65,38 +65,64 @@ If truth fails, the system is invalid — regardless of test results elsewhere.
 
 ## AI Collaboration
 
-This repository is designed for human-AI collaboration with explicit boundaries.
+This repository is designed for human-AI collaboration. The system uses **skills** (specialized workflows), **agents** (review personas), and **rules** (automatic guardrails).
 
-### Agents
+### How It Works in Practice
 
-Three agents provide checks and balances (see `.claude/agents/`):
+**You don't need to memorize skill names.** Just describe what you want:
 
-| Agent | Role | When to Invoke |
+| You say... | Claude uses... |
+|------------|----------------|
+| "I have an idea for a feature" | `/intake` |
+| "Generate the API contract" | `/contract-author` |
+| "What are the weights and thresholds?" | `/algorithm-spec` |
+| "Create test scenarios" | `/scenario-author` |
+| "Build this in Go" | `/implementation-generate` |
+| "Verify everything works" | `/truth-verify` |
+
+Claude matches your intent to the appropriate skill. You can also invoke skills directly with `/skill-name` if you prefer.
+
+### Automatic Guardrails (Rules)
+
+These work silently in the background:
+
+- **Truth Protection** — Claude cannot modify `truth/` without explicit approval
+- **Pace Enforcement** — Changes are classified by layer; slow-layer changes require confirmation
+
+### Review Agents
+
+Three agents provide checks and balances. Claude consults them when appropriate:
+
+| Agent | Role | Triggered When |
 |-------|------|----------------|
-| **Boundary Steward** | Architectural conscience | Before coding, before merge |
-| **Fast-Layer Builder** | Aggressive executor | Fast/medium pace stories |
-| **Contract Guardian** | Conservative reviewer | Any slow-layer change |
+| **Boundary Steward** | Asks "what is this really?" | Architectural decisions |
+| **Contract Guardian** | Demands precision and invariants | Slow-layer changes |
+| **Fast-Layer Builder** | Executes without over-engineering | UI and glue code |
 
-### Rules
-
-Two rules govern AI behavior (see `.claude/rules/`):
-
-- **Truth Protection** — AI cannot modify `truth/` without explicit approval
-- **Pace Enforcement** — Changes are classified by layer before proceeding
-
-### Skills
+### Skills Reference
 
 | Skill | Purpose |
 |-------|---------|
-| `intake` | Turn an idea into truth artifacts directly |
-| `intent-distill` | Extract truth artifacts from PRDs and stories |
-| `contract-author` | Generate OpenAPI contracts from intent |
+| `intake` | Turn an idea into truth artifacts |
+| `intent-distill` | Extract truth from PRDs and stories |
+| `contract-author` | Generate OpenAPI contracts |
 | `algorithm-spec` | Define formulas, weights, thresholds |
-| `slo-define` | Create metrics and SLO definitions |
-| `scenario-author` | Generate Adzic-style key examples |
+| `slo-define` | Create metrics and SLOs |
+| `scenario-author` | Generate key examples |
 | `boundary-classify` | Classify changes by pace layer |
-| `implementation-generate` | Generate apps from truth layer |
-| `truth-verify` | Run verification with formatted summary |
+| `implementation-generate` | Generate apps from truth |
+| `truth-verify` | Run verification |
+
+### Getting Started
+
+The simplest workflow:
+
+1. **Describe your idea** — Claude creates intent documents
+2. **Review and refine** — Claude helps clarify ambiguities
+3. **Generate artifacts** — Contracts, scenarios, implementations
+4. **Verify** — Run specs to confirm everything works
+
+See [docs/WORKFLOW.md](docs/WORKFLOW.md) for a complete walkthrough.
 
 ## What Matters Most
 
