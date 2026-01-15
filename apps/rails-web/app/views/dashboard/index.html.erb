@@ -1,0 +1,154 @@
+<% content_for(:title) { "Dashboard" } %>
+
+<% if @empty_state %>
+  <%= render "dashboard/empty_state" %>
+<% else %>
+  <%# Stats Overview %>
+  <div class="stats-grid animate-in">
+    <div class="stat-card stat-card--magenta">
+      <div class="stat-card__value"><%= @stats[:total_watched] %></div>
+      <div class="stat-card__label">Total Watched</div>
+    </div>
+    <div class="stat-card stat-card--cyan">
+      <div class="stat-card__value"><%= @stats[:in_progress] %></div>
+      <div class="stat-card__label">In Progress</div>
+    </div>
+    <div class="stat-card stat-card--amber">
+      <div class="stat-card__value"><%= @stats[:subscriptions] %></div>
+      <div class="stat-card__label">Subscriptions</div>
+    </div>
+    <div class="stat-card stat-card--green">
+      <div class="stat-card__value"><%= number_to_currency(@stats[:potential_savings], precision: 0) %></div>
+      <div class="stat-card__label">Potential Savings</div>
+    </div>
+  </div>
+
+  <%# Recommendations Section %>
+  <section class="vhs-section">
+    <div class="vhs-section__header">
+      <h2 class="vhs-section__title">▶ Top Picks for You</h2>
+      <div class="vhs-section__line"></div>
+      <span class="vhs-section__count"><%= @recommendations.count %> NEW</span>
+    </div>
+
+    <div class="vhs-grid vhs-grid--large">
+      <% @recommendations.each_with_index do |rec, index| %>
+        <% if index == 0 %>
+          <%= render "dashboard/featured_card", recommendation: rec %>
+        <% else %>
+          <%= render "dashboard/tape_card", recommendation: rec, index: index %>
+        <% end %>
+      <% end %>
+
+      <% if @recommendations.empty? %>
+        <div class="vhs-empty" style="grid-column: 1 / -1;">
+          <div class="vhs-empty__icon">📼</div>
+          <div class="vhs-empty__title">NO RECOMMENDATIONS YET</div>
+          <p class="vhs-empty__text">Mark some titles as watched to get personalized recommendations.</p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# Subscription Intelligence %>
+  <section class="vhs-section">
+    <div class="vhs-section__header">
+      <h2 class="vhs-section__title">$ Subscription Intelligence</h2>
+      <div class="vhs-section__line"></div>
+    </div>
+
+    <div class="subscriptions-grid">
+      <% @intelligence.assessments.each do |assessment| %>
+        <%= render "dashboard/subscription_card", assessment: assessment %>
+      <% end %>
+
+      <% if @subscriptions.empty? %>
+        <div class="vhs-empty">
+          <div class="vhs-empty__icon">💳</div>
+          <div class="vhs-empty__title">NO SUBSCRIPTIONS</div>
+          <p class="vhs-empty__text">Add your streaming subscriptions to get value insights.</p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# Recent Viewing History %>
+  <section class="vhs-section">
+    <div class="vhs-section__header">
+      <h2 class="vhs-section__title">◉ Recent History</h2>
+      <div class="vhs-section__line"></div>
+      <%= link_to "VIEW ALL", "#", class: "vhs-btn vhs-btn--ghost", style: "padding: var(--space-sm) var(--space-md); font-size: 0.85rem;" %>
+    </div>
+
+    <div class="history-list">
+      <% @recent_history.each do |record| %>
+        <%= render "dashboard/history_item", record: record %>
+      <% end %>
+
+      <% if @recent_history.empty? %>
+        <div class="vhs-empty">
+          <div class="vhs-empty__icon">📺</div>
+          <div class="vhs-empty__title">NO VIEWING HISTORY</div>
+          <p class="vhs-empty__text">Start marking titles as watched to build your history.</p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .stat-card {
+    background: var(--vhs-dark);
+    border: 1px solid var(--vhs-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    text-align: center;
+  }
+
+  .stat-card__value {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .stat-card__label {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: var(--space-sm);
+  }
+
+  .stat-card--magenta .stat-card__value { color: var(--neon-magenta); text-shadow: 0 0 15px var(--neon-magenta); }
+  .stat-card--cyan .stat-card__value { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); }
+  .stat-card--amber .stat-card__value { color: var(--neon-amber); text-shadow: 0 0 15px var(--neon-amber); }
+  .stat-card--green .stat-card__value { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
+
+  .subscriptions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  @media (max-width: 1024px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

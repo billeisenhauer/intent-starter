@@ -27,6 +27,13 @@ class Household < ApplicationRecord
          .distinct
   end
 
+  # Returns all titles in progress (started but not fully watched)
+  def in_progress_titles
+    Title.joins(:viewing_records)
+         .where(viewing_records: { member_id: members.pluck(:id), fully_watched: false })
+         .distinct
+  end
+
   # Check if any member has watched a given title
   def watched_by_any?(title)
     viewing_records.where(title: title).exists?

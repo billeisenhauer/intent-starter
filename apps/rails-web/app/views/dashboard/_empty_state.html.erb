@@ -1,0 +1,186 @@
+<%# Empty state when no household data exists %>
+<div class="empty-state animate-in">
+  <div class="empty-state__visual">
+    <div class="empty-state__tape">
+      <div class="empty-state__tape-reels">
+        <div class="empty-state__reel empty-state__reel--left"></div>
+        <div class="empty-state__reel empty-state__reel--right"></div>
+      </div>
+      <div class="empty-state__tape-label">
+        <span class="empty-state__tape-text">NO DATA</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state__content">
+    <h2 class="empty-state__title">WELCOME TO BINGE WATCHING</h2>
+    <p class="empty-state__description">
+      Your household viewing intelligence system is ready.<br>
+      Set up your household to start tracking your streaming habits.
+    </p>
+
+    <div class="empty-state__steps">
+      <div class="empty-state__step">
+        <span class="empty-state__step-number">01</span>
+        <span class="empty-state__step-text">Create your household</span>
+      </div>
+      <div class="empty-state__step">
+        <span class="empty-state__step-number">02</span>
+        <span class="empty-state__step-text">Add household members</span>
+      </div>
+      <div class="empty-state__step">
+        <span class="empty-state__step-number">03</span>
+        <span class="empty-state__step-text">Connect your subscriptions</span>
+      </div>
+      <div class="empty-state__step">
+        <span class="empty-state__step-number">04</span>
+        <span class="empty-state__step-text">Start marking what you watch</span>
+      </div>
+    </div>
+
+    <div class="empty-state__actions">
+      <%= link_to "GET STARTED", "#", class: "vhs-btn vhs-btn--primary" %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: var(--space-2xl);
+  }
+
+  .empty-state__visual {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .empty-state__tape {
+    width: 200px;
+    height: 130px;
+    background: var(--vhs-dark);
+    border: 2px solid var(--vhs-light);
+    border-radius: var(--radius-md);
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .empty-state__tape-reels {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-lg) var(--space-xl);
+  }
+
+  .empty-state__reel {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--vhs-light);
+    border-radius: 50%;
+    position: relative;
+    animation: spin-slow 8s linear infinite;
+  }
+
+  .empty-state__reel::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 15px;
+    height: 15px;
+    background: var(--vhs-medium);
+    border-radius: 50%;
+    border: 2px solid var(--vhs-light);
+  }
+
+  .empty-state__reel--left { animation-direction: normal; }
+  .empty-state__reel--right { animation-direction: reverse; }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .empty-state__tape-label {
+    position: absolute;
+    bottom: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--neon-magenta);
+    padding: var(--space-xs) var(--space-lg);
+    border-radius: var(--radius-sm);
+  }
+
+  .empty-state__tape-text {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--vhs-black);
+    letter-spacing: 0.2em;
+  }
+
+  .empty-state__title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.15em;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 20px var(--neon-cyan);
+    margin-bottom: var(--space-lg);
+  }
+
+  .empty-state__description {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .empty-state__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+    text-align: left;
+  }
+
+  .empty-state__step {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--vhs-dark);
+    border: 1px solid var(--vhs-light);
+    border-radius: var(--radius-md);
+    min-width: 320px;
+  }
+
+  .empty-state__step-number {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--neon-magenta);
+    text-shadow: 0 0 10px var(--neon-magenta);
+    letter-spacing: 0.1em;
+  }
+
+  .empty-state__step-text {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    letter-spacing: 0.1em;
+  }
+
+  .empty-state__actions {
+    margin-top: var(--space-lg);
+  }
+
+  @media (max-width: 640px) {
+    .empty-state__step {
+      min-width: unset;
+      width: 100%;
+    }
+  }
+</style>
