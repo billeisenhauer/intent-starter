@@ -79,6 +79,7 @@ This repository is designed for human-AI collaboration. The system uses **skills
 | "Create test scenarios" | `/scenario-author` |
 | "Build this in Go" | `/implementation-generate` |
 | "Verify everything works" | `/truth-verify` |
+| "Explain this to a stakeholder" | `/narrative-generate` |
 
 Claude matches your intent to the appropriate skill. You can also invoke skills directly with `/skill-name` if you prefer.
 
@@ -109,6 +110,7 @@ Three agents provide checks and balances. Claude consults them when appropriate:
 | `algorithm-spec` | Define formulas, weights, thresholds |
 | `slo-define` | Create metrics and SLOs |
 | `scenario-author` | Generate key examples |
+| `narrative-generate` | Create prose for stakeholders |
 | `boundary-classify` | Classify changes by pace layer |
 | `implementation-generate` | Generate apps from truth |
 | `truth-verify` | Run verification |
