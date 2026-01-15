@@ -28,6 +28,8 @@ it belongs nowhere *but* `truth/`.
 3. Let `truth:verify` be the final authority
 4. Treat app code as disposable
 
+**See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the complete truth-first development workflow with a day-in-the-life example.**
+
 ## Development Environment
 
 This repository uses the DX Protocol for containerized development.
@@ -88,7 +90,12 @@ Two rules govern AI behavior (see `.claude/rules/`):
 |-------|---------|
 | `intake` | Turn an idea into truth artifacts directly |
 | `intent-distill` | Extract truth artifacts from PRDs and stories |
+| `contract-author` | Generate OpenAPI contracts from intent |
+| `algorithm-spec` | Define formulas, weights, thresholds |
+| `slo-define` | Create metrics and SLO definitions |
+| `scenario-author` | Generate Adzic-style key examples |
 | `boundary-classify` | Classify changes by pace layer |
+| `implementation-generate` | Generate apps from truth layer |
 | `truth-verify` | Run verification with formatted summary |
 
 ## What Matters Most
