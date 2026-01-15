@@ -7,3 +7,30 @@ services:
       - type: bind
         source: "."
         target: "/root/workspace"
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/binge_watching_development
+      - RAILS_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: binge_watching_development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
