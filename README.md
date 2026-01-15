@@ -1,134 +1,129 @@
-# This Repository
+# intent-starter
 
-This repository contains **two different kinds of things**:
+This repository is a **starter for intent-governed software systems**.
+
+It demonstrates a way of building software where **system identity is explicit, enforceable, and durable**, even as implementations change.
+
+If you are new here, **do not start with the code**.
+
+Start with the manifesto.
+
+👉 **[Read the Manifesto](./MANIFESTO.md)**
+
+---
+
+## What This Repository Contains
+
+This repository is structured around a single distinction:
 
 - `truth/` — the **authoritative identity** of the system
 - `apps/` — one or more **temporary implementations** of that identity
 
 Only one of these is allowed to define what the system *is*.
 
-## Core Principle
+### `truth/`
 
-> **Truth defines identity.  
-> Apps express it.**
+The `truth/` directory contains binding claims about system identity:
 
-All applications in `apps/` are replaceable.
-Nothing in `truth/` is.
+- intent
+- invariants
+- contracts
+- pace rules
+- evaluations
 
-If an implementation can be regenerated without changing system identity,
-it does not belong in `truth/`.
+Nothing in `truth/` depends on application code or frameworks.
 
-If a claim must survive regeneration,
-it belongs nowhere *but* `truth/`.
+If `truth:verify` fails, the system is considered invalid — regardless of whether applications appear to work.
 
-## How to Work Here
+### `apps/`
 
-1. Begin new work by reading `truth/`
-2. Modify `truth/` only with explicit intent
-3. Let `truth:verify` be the final authority
-4. Treat app code as disposable
+The `apps/` directory contains implementations.
 
-**See [docs/WORKFLOW.md](docs/WORKFLOW.md) for the complete truth-first development workflow with a day-in-the-life example.**
+They may:
+- be regenerated
+- be replaced
+- be deleted
 
-## Development Environment
+Their purpose is to satisfy truth, not to preserve history.
 
-This repository uses the DX Protocol for containerized development.
+Multiple implementations may coexist.
 
-```bash
-# Build the Docker image
-dx/build
+---
 
-# Start the environment
-dx/start
+## How to Use This Repository
 
-# Run commands inside the container
-dx/exec make -C truth truth:verify
-dx/exec bash
+This repo is not meant to be "run" in the usual sense.
 
-# Stop the environment
-dx/stop
-```
+It is meant to be **inhabited**.
 
-**Requirements:** Docker only. No Ruby, Node, or other dependencies needed on host.
+Typical usage looks like this:
 
-## Verification
+1. Define or modify system intent in `truth/`
+2. Enforce identity via evaluations
+3. Generate or evolve an implementation under `apps/`
+4. Let `truth:verify` decide whether the system is still itself
 
-```bash
-# On host (if Ruby installed)
-make -C truth truth:verify
+The workflow is documented here:
 
-# In container (no host dependencies)
-dx/exec make -C truth truth:verify
-```
+👉 **[`docs/WORKFLOW.md`](./docs/WORKFLOW.md)**
 
-If truth fails, the system is invalid — regardless of test results elsewhere.
+---
 
-## AI Collaboration
+## AI and Agents
 
-This repository is designed for human-AI collaboration. The system uses **skills** (specialized workflows), **agents** (review personas), and **rules** (automatic guardrails).
+This repository assumes AI-assisted development is normal.
 
-### How It Works in Practice
+AI is used aggressively where code is disposable and constrained where identity is at stake.
 
-**You don't need to memorize skill names.** Just describe what you want:
+Agent definitions and rules live under `.claude/` and exist to:
+- protect truth from erosion
+- enforce pace boundaries
+- allow fast regeneration without silent drift
 
-| You say... | Claude uses... |
-|------------|----------------|
-| "I have an idea for a feature" | `/intake` |
-| "Generate the API contract" | `/contract-author` |
-| "What are the weights and thresholds?" | `/algorithm-spec` |
-| "Create test scenarios" | `/scenario-author` |
-| "Build this in Go" | `/implementation-generate` |
-| "Verify everything works" | `/truth-verify` |
-| "Explain this to a stakeholder" | `/narrative-generate` |
+AI is treated as an executor, not an authority.
 
-Claude matches your intent to the appropriate skill. You can also invoke skills directly with `/skill-name` if you prefer.
+---
 
-### Automatic Guardrails (Rules)
+## Who This Is For
 
-These work silently in the background:
+This repository is for people who:
 
-- **Truth Protection** — Claude cannot modify `truth/` without explicit approval
-- **Pace Enforcement** — Changes are classified by layer; slow-layer changes require confirmation
+- expect software to change repeatedly
+- care about long-lived systems
+- want regeneration to be safe, not scary
+- are willing to accept constraints in exchange for clarity
 
-### Review Agents
+If you are looking for:
+- a framework
+- a generator
+- a productivity shortcut
 
-Three agents provide checks and balances. Claude consults them when appropriate:
+this repository is not that.
 
-| Agent | Role | Triggered When |
-|-------|------|----------------|
-| **Boundary Steward** | Asks "what is this really?" | Architectural decisions |
-| **Contract Guardian** | Demands precision and invariants | Slow-layer changes |
-| **Fast-Layer Builder** | Executes without over-engineering | UI and glue code |
+---
 
-### Skills Reference
+## What to Read Next
 
-| Skill | Purpose |
-|-------|---------|
-| `intake` | Turn an idea into truth artifacts |
-| `intent-distill` | Extract truth from PRDs and stories |
-| `contract-author` | Generate OpenAPI contracts |
-| `algorithm-spec` | Define formulas, weights, thresholds |
-| `slo-define` | Create metrics and SLOs |
-| `scenario-author` | Generate key examples |
-| `narrative-generate` | Create prose for stakeholders |
-| `boundary-classify` | Classify changes by pace layer |
-| `implementation-generate` | Generate apps from truth |
-| `truth-verify` | Run verification |
+If you want to understand *why* this exists:
 
-### Getting Started
+👉 **[`MANIFESTO.md`](./MANIFESTO.md)**
 
-The simplest workflow:
+If you want to understand *how* it is used:
 
-1. **Describe your idea** — Claude creates intent documents
-2. **Review and refine** — Claude helps clarify ambiguities
-3. **Generate artifacts** — Contracts, scenarios, implementations
-4. **Verify** — Run specs to confirm everything works
+👉 **[`docs/WORKFLOW.md`](./docs/WORKFLOW.md)**
 
-See [docs/WORKFLOW.md](docs/WORKFLOW.md) for a complete walkthrough.
+If you want to understand *what must never change*:
 
-## What Matters Most
+👉 **[`truth/`](./truth/README.md)**
 
-This repository is not optimized for speed of coding.
+---
 
-It is optimized for **continuity under change**.
+## Final Note
 
+This repository is intentionally opinionated.
+
+It does not attempt to convince everyone.
+
+It exists to make a claim precise and testable:
+
+> **Software identity should be governed, not inferred.**
