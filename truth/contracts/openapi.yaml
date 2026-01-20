@@ -1,0 +1,205 @@
+openapi: 3.0.3
+info:
+  title: Tic-Tac-Toe API
+  description: |
+    API contract for tic-tac-toe game implementations.
+
+    This contract defines the external promises that all implementations must honor.
+    The truth layer evaluations verify compliance with this contract.
+  version: 1.0.0
+
+paths:
+  /game:
+    post:
+      summary: Create a new game
+      description: |
+        Initializes a new tic-tac-toe game with an empty board.
+        X is always the first player to move.
+      operationId: createGame
+      responses:
+        '201':
+          description: Game created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+
+  /game/{gameId}:
+    get:
+      summary: Get current game state
+      description: Returns the current state of the specified game
+      operationId: getGame
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Game state retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+        '404':
+          description: Game not found
+
+  /game/{gameId}/move:
+    post:
+      summary: Make a move
+      description: |
+        Places the current player's mark on the specified cell.
+
+        Invariants enforced:
+        - Only the current player may move
+        - Move must target an empty cell
+        - Move must be within board boundaries (0-2)
+        - Game must be in progress
+      operationId: makeMove
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveRequest'
+      responses:
+        '200':
+          description: Move accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+        '400':
+          description: Invalid move
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Game not found
+
+  /game/{gameId}/forfeit:
+    post:
+      summary: Forfeit the game
+      description: |
+        Current player forfeits the game, immediately losing.
+
+        Invariants enforced:
+        - Only the current player may forfeit
+        - Game must be in progress
+        - Opponent wins immediately upon forfeit
+      operationId: forfeitGame
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForfeitRequest'
+      responses:
+        '200':
+          description: Forfeit accepted, opponent wins
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+        '400':
+          description: Invalid forfeit attempt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Game not found
+
+components:
+  schemas:
+    GameState:
+      type: object
+      required:
+        - id
+        - board
+        - currentPlayer
+        - status
+      properties:
+        id:
+          type: string
+          description: Unique game identifier
+        board:
+          type: array
+          description: 3x3 board represented as array of 9 cells (row-major order)
+          items:
+            type: string
+            enum: ['', 'X', 'O']
+          minItems: 9
+          maxItems: 9
+        currentPlayer:
+          type: string
+          enum: ['X', 'O']
+          description: Player who should move next
+        status:
+          type: string
+          enum: ['in_progress', 'x_wins', 'o_wins', 'draw', 'x_forfeits', 'o_forfeits']
+          description: Current game status
+        winner:
+          type: string
+          enum: ['X', 'O']
+          description: The winning player (only present if game is won)
+
+    MoveRequest:
+      type: object
+      required:
+        - row
+        - col
+        - player
+      properties:
+        row:
+          type: integer
+          minimum: 0
+          maximum: 2
+          description: Row index (0-2)
+        col:
+          type: integer
+          minimum: 0
+          maximum: 2
+          description: Column index (0-2)
+        player:
+          type: string
+          enum: ['X', 'O']
+          description: Player making the move
+
+    ForfeitRequest:
+      type: object
+      required:
+        - player
+      properties:
+        player:
+          type: string
+          enum: ['X', 'O']
+          description: Player forfeiting the game
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message describing why the action was rejected
+          enum:
+            - 'not_your_turn'
+            - 'cell_occupied'
+            - 'invalid_position'
+            - 'game_over'

@@ -1,0 +1,100 @@
+# Tic-Tac-Toe Key Examples
+# Specification by Example (Gojko Adzic style)
+#
+# These tables define the expected behavior for all implementations.
+# Each scenario tests a specific invariant from the intent document.
+
+scenarios:
+  - name: Game Initialization
+    description: A new game starts correctly
+    invariant: Game Initialization
+    examples:
+      - when: new game created
+        then:
+          board: [empty, empty, empty, empty, empty, empty, empty, empty, empty]
+          current_player: X
+          status: in_progress
+
+  - name: Turn Alternation
+    description: Players must alternate turns starting with X
+    invariant: Turn Order
+    examples:
+      | move_number | player | result   | next_player |
+      | 1           | X      | accepted | O           |
+      | 1           | O      | rejected | X           |
+      | 2           | X      | rejected | O           |
+      | 2           | O      | accepted | X           |
+      | 3           | O      | rejected | X           |
+      | 3           | X      | accepted | O           |
+
+  - name: Move to Occupied Cell
+    description: Cannot place mark on occupied cell
+    invariant: Move Validity
+    examples:
+      | initial_moves     | attempted_move | result   | error         |
+      | X at (0,0)        | X at (0,0)     | rejected | cell_occupied |
+      | X at (0,0)        | O at (0,0)     | rejected | cell_occupied |
+      | X(0,0), O(1,1)    | X at (1,1)     | rejected | cell_occupied |
+
+  - name: Move Outside Board
+    description: Moves must be within 0-2 boundaries
+    invariant: Move Validity
+    examples:
+      | row | col | result   | error            |
+      | -1  | 0   | rejected | invalid_position |
+      | 0   | -1  | rejected | invalid_position |
+      | 3   | 0   | rejected | invalid_position |
+      | 0   | 3   | rejected | invalid_position |
+      | 0   | 0   | accepted | -                |
+      | 2   | 2   | accepted | -                |
+
+  - name: Horizontal Win
+    description: Three in a row wins
+    invariant: Win Conditions
+    examples:
+      | winning_line | moves                           | winner | status  |
+      | top row      | X(0,0), O(1,0), X(0,1), O(1,1), X(0,2) | X | x_wins |
+      | middle row   | X(1,0), O(0,0), X(1,1), O(0,1), X(1,2) | X | x_wins |
+      | bottom row   | X(2,0), O(0,0), X(2,1), O(0,1), X(2,2) | X | x_wins |
+
+  - name: Vertical Win
+    description: Three in a column wins
+    invariant: Win Conditions
+    examples:
+      | winning_line  | moves                           | winner | status  |
+      | left column   | X(0,0), O(0,1), X(1,0), O(1,1), X(2,0) | X | x_wins |
+      | middle column | X(0,1), O(0,0), X(1,1), O(1,0), X(2,1) | X | x_wins |
+      | right column  | X(0,2), O(0,0), X(1,2), O(1,0), X(2,2) | X | x_wins |
+
+  - name: Diagonal Win
+    description: Three in a diagonal wins
+    invariant: Win Conditions
+    examples:
+      | winning_line   | moves                           | winner | status  |
+      | main diagonal  | X(0,0), O(0,1), X(1,1), O(0,2), X(2,2) | X | x_wins |
+      | anti-diagonal  | X(0,2), O(0,0), X(1,1), O(1,0), X(2,0) | X | x_wins |
+
+  - name: Draw Game
+    description: Full board with no winner is a draw
+    invariant: Draw Condition
+    examples:
+      - moves: X(0,0), O(0,1), X(0,2), O(1,1), X(1,0), O(2,0), X(1,2), O(2,2), X(2,1)
+        result:
+          status: draw
+          winner: null
+          board_full: true
+
+  - name: No Moves After Win
+    description: Game rejects moves after someone wins
+    invariant: Game Termination
+    examples:
+      | game_state            | attempted_move | result   | error     |
+      | X wins (top row)      | O at (2,2)     | rejected | game_over |
+      | O wins (left column)  | X at (0,2)     | rejected | game_over |
+
+  - name: No Moves After Draw
+    description: Game rejects moves after a draw
+    invariant: Game Termination
+    examples:
+      | game_state | attempted_move | result   | error     |
+      | draw       | X at any       | rejected | game_over |

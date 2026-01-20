@@ -1,6 +1,37 @@
 # docker-compose.dev.yml
 # Multi-app development environment with separate databases
 services:
+  # Go Tic-Tac-Toe (port 8081)
+  go-tictactoe:
+    image: ${IMAGE}
+    init: true
+    volumes:
+      - type: bind
+        source: "."
+        target: "/root/workspace"
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - CGO_ENABLED=0
+    working_dir: /root/workspace/apps/go-tictactoe
+    command: bash -c "go mod tidy && go run ."
+
+  # Python Tic-Tac-Toe (port 8082)
+  python-tictactoe:
+    image: ${IMAGE}
+    init: true
+    volumes:
+      - type: bind
+        source: "."
+        target: "/root/workspace"
+    ports:
+      - "8082:8082"
+    environment:
+      - PORT=8082
+    working_dir: /root/workspace/apps/python-tictactoe
+    command: bash -c "python3 -m pip install --break-system-packages -r requirements.txt && python3 main.py"
+
   # Rails application (port 3000)
   rails-app:
     image: ${IMAGE}
