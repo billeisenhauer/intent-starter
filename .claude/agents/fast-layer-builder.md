@@ -6,9 +6,9 @@
 
 ## Jurisdiction
 
-- UI
 - Adapters
 - Glue code
+- Non-UI client code
 - Orchestration
 - Medium-layer services (with guardrails)
 

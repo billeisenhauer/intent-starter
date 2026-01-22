@@ -7,8 +7,9 @@ fast:
   regeneration: "AI-first. Minimal review."
   characteristics:
     - High churn
-    - User-facing presentation
     - Glue code
+    - Non-UI client code
+    - Adapters and integrations
     - No architectural preservation required
   requirements:
     human_review: optional
@@ -35,6 +36,7 @@ slow:
     - Data shape
     - External contracts
     - Security boundaries
+    - User interface (human protocol boundary)
   requirements:
     human_review: required
     tests: mandatory
