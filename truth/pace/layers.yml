@@ -10,6 +10,7 @@ fast:
     - Glue code
     - Non-UI client code
     - Adapters and integrations
+    - Presentation UI (layout, styling, visual ordering)
     - No architectural preservation required
   requirements:
     human_review: optional
@@ -23,6 +24,7 @@ medium:
     - Business workflows
     - Orchestration logic
     - Cross-boundary coordination
+    - UI composition and state binding
   requirements:
     human_review: required
     tests: recommended
@@ -36,7 +38,7 @@ slow:
     - Data shape
     - External contracts
     - Security boundaries
-    - User interface (human protocol boundary)
+    - Interaction semantics UI (intent expression, affordances, explanations)
   requirements:
     human_review: required
     tests: mandatory

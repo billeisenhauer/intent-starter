@@ -11,7 +11,7 @@
 - Security
 - Infrastructure
 - Truth-linked contracts
-- User interface (human protocol boundary)
+- Interaction semantics UI (intent expression, affordances, explanations)
 
 ## Forbidden Actions
 

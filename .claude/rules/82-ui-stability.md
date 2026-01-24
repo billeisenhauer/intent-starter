@@ -2,25 +2,36 @@
 
 ## Rule
 
-Do not change user-facing interface elements without explicit confirmation.
+UI changes that alter what a user can express, see, or override
+must be treated as slow-layer changes.
 
-UI is the human protocol of the system.
-Changes invalidate learned user behavior.
+Presentation changes (layout, styling, visual ordering) may proceed
+as fast-layer work.
 
-## Before UI Changes
+## The Split
 
-1. State what interface element is changing
-2. Identify what user habits are affected
-3. Confirm the change is deliberate, not incidental
+**Slow (Interaction Semantics):**
+- Controls that express user intent
+- Explanation visibility
+- Affordances for dismiss, defer, override
+- Preference inputs
+- Confirmation flows
 
-## Forbidden
+**Fast (Presentation):**
+- Layout and spacing
+- Styling and colors
+- Visual ordering
+- Animation and transitions
+- Copy tone (within bounds)
 
-- Incidental UI changes alongside feature work
-- "Improvements" without explicit request
-- Layout changes for aesthetic reasons alone
+## Before Semantic UI Changes
+
+1. Identify what user intent is affected
+2. Check which invariants depend on this affordance
+3. Confirm the change is deliberate
 
 ## What This Prevents
 
-- User confusion from unexpected changes
-- Erosion of trust through constant UI churn
+- Silent removal of user agency
+- Breaking invariants through UI changes
 - Exporting system flexibility costs to users

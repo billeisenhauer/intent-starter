@@ -23,3 +23,11 @@ Pace says:
 If pace begins to describe process,
 it is contaminated.
 
+## UI Classification
+
+User interface elements that define or constrain user intent
+are considered part of the system's semantic boundary
+and must not be treated as purely fast-changing presentation.
+
+UI is slow where it defines meaning, and fast where it only defines appearance.
+

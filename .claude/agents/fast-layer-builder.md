@@ -10,7 +10,16 @@
 - Glue code
 - Non-UI client code
 - Orchestration
+- Presentation UI (layout, styling, visual ordering only)
 - Medium-layer services (with guardrails)
+
+## Explicit Constraint
+
+Presentation UI is in scope.
+Interaction semantics UI is NOT in scope.
+
+If a UI change affects what the user can express, defer, or override,
+it is not presentation — it is semantics.
 
 ## Forbidden Actions
 
